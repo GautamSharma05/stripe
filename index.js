@@ -114,4 +114,4 @@ app.post("/stripe/charge", async (req, res) => {
 // });
 
 //listen
-app.listen(4000, () => console.log("Server running"));
+app.listen(process.env.PORT || 4000, () => console.log("Server running"));
