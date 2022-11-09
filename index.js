@@ -23,6 +23,7 @@ app.post("/create-account", async (req, res) => {
 });
 
 app.post("/stripe/charge", async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin','*');
   const paymentIntent = await stripe.paymentIntents.create({
     amount: req.body.amount * 100,
     currency: req.body.currency,
