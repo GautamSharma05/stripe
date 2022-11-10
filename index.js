@@ -10,7 +10,26 @@ const app = express();
 // middleware
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "*" }));
+const allowedOrigins = [
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost',
+  'http://localhost:8080',
+  'http://localhost:8100',
+];
+
+// Reflect the origin if it's in the allowed list or not defined (cURL, Postman, etc.)
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origin not allowed by CORS'));
+    }
+  },
+};
+
+app.options('*', cors(corsOptions));
 
 // routes
 app.get("/", (req, res) => {
@@ -22,7 +41,7 @@ app.post("/create-account", async (req, res) => {
   res.send(account);
 });
 
-app.post("/stripe/charge", async (req, res) => {
+app.post("/stripe/charge",cors(corsOptions), async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin','*');
   const paymentIntent = await stripe.paymentIntents.create({
     amount: req.body.amount * 100,
