@@ -49,7 +49,6 @@ app.post("/stripe/charge",cors(corsOptions), async (req, res) => {
     source: req.body.token,
     receipt_email: req.body.email,
     description: 'Software development services',
-    customer:"Sentrien",
     level3: {
       merchant_reference: 55823,
       customer_reference: 808080,
@@ -60,7 +59,7 @@ app.post("/stripe/charge",cors(corsOptions), async (req, res) => {
         {
           product_code: 11234,
           product_description: 'First item',
-          unit_cost: 60,
+          unit_cost: 1000,
           quantity: 1,
           tax_amount: 0,
           discount_amount: 0,
