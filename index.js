@@ -3,7 +3,7 @@ const express = require("express");
 const stripe = require("stripe")(
   "sk_test_51L7jl5FzVl4wML1bJF3CzkPFlZiqhw2ZdE7avUE6DGOnp9qBJ9oPmVQ6uetrCzct8jzFU8WOxUQiDE34am570F0P00AqI3NmxK"
 );
-const uuid = require("uuid");
+
 
 const app = express();
 
@@ -36,10 +36,6 @@ app.get("/", (req, res) => {
   res.send("It works!");
 });
 
-app.post("/create-account", async (req, res) => {
-  const account = await stripe.accounts.create({ type: "standard" });
-  res.send(account);
-});
 
 app.post("/stripe/charge",cors(corsOptions), async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin','*');
@@ -76,61 +72,6 @@ app.post("/stripe/charge",cors(corsOptions), async (req, res) => {
   res.send(paymentIntent);
 });
 
-// app.post("/stripe/charge", (req, res) => {
-//   stripe.charges
-//     .create(
-//       {
-//         amount: req.body.amount,
-//         currency: req.body.currency,
-//         source: req.body.token,
-
-//         description: "My First Test Charge (created for API docs)",
-//       },
-//       {
-//         stripeAccount: "acct_1LjjqEEGkHmhCTOD",
-//       }
-//     )
-//     .then((charge) => {
-//       console.log(charge);
-//       res.status(200).json(charge);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.send(err);
-//     });
-// });
-
-// app.post("/stripe/charge", (req, res) => {
-
-//   stripe.checkout.sessions
-//     .create(
-//       {
-//         line_items: [
-//           {
-//             name: "Stainless Steel Water Bottle",
-//             amount: req.body.amount * 100,
-//             currency: req.body.currency,
-//             // source: req.body.token,
-//             quantity: 1,
-//           },
-//         ],
-//         mode: "payment",
-//         success_url: "http://localhost/",
-//         cancel_url: "https://www.facebook.com/",
-//       },
-//       {
-//         stripeAccount: "acct_1LjjqEEGkHmhCTOD",
-//       }
-//     )
-//     .then((charge) => {
-
-//       res.status(200).json({success:true,charge});
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.send(err);
-//     });
-// });
 
 //listen
 app.listen(process.env.PORT || 4000, () => console.log("Server running"));
